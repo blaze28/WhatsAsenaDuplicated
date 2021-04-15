@@ -576,7 +576,7 @@ else if (config.WORKTYPE == 'public') {
     
         var buffer = await googleTTS.synthesize({
             text: ttsMessage,
-            voice: 'en-IN'
+            voice: LANG
         });
         await message.client.sendMessage(message.jid,buffer, MessageType.audio, {mimetype: Mimetype.mp4Audio, ptt: true});
     }));
