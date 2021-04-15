@@ -592,9 +592,12 @@ else if (config.WORKTYPE == 'public') {
         let title = arama[0].title.replace(' ', '+');
         let stream = ytdl(arama[0].videoId, {
             quality: 'highestaudio',
-        });
-        var info = await ytdl.getInfo(arama[0].videoId);
-        var songtitle = info.title;
+            function(err, info) {
+                if (err) throw err;
+                    var songTitle = info.title;
+        }});
+        
+);
     
         got.stream(arama[0].image).pipe(fs.createWriteStream(title + '.jpg'));
         ffmpeg(stream)
@@ -612,7 +615,7 @@ else if (config.WORKTYPE == 'public') {
                 writer.addTag();
 
                 reply = await message.client.sendMessage(message.jid,Lang.UPLOADING_SONG,MessageType.text);
-                await message.client.sendMessage(message.jid,Buffer.from(writer.arrayBuffer), MessageType.document, {filename: songtitle+'.m4a',mimetype: Mimetype.mp4Audio, ptt: false});
+                await message.client.sendMessage(message.jid,Buffer.from(writer.arrayBuffer), MessageType.document, {filename: songTitle+'.m4a',mimetype: Mimetype.mp4Audio, ptt: false});
             });
     }));
 
