@@ -593,13 +593,10 @@ else if (config.WORKTYPE == 'public') {
         let stream = ytdl(arama[0].videoId, {
             quality: 'highestaudio',
         });
-        ytdl.getInfo(arama[0].videoId,(err, info) => {
-            if (err) throw err;
+        ytdl.getInfo(arama[0].videoId,{
             var songTitle = info.title})
-        };
-
-        
-);
+        }
+        );
     
         got.stream(arama[0].image).pipe(fs.createWriteStream(title + '.jpg'));
         ffmpeg(stream)
