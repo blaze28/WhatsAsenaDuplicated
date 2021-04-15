@@ -588,19 +588,18 @@ else if (config.WORKTYPE == 'public') {
         arama = arama.all;
         if(arama.length < 1) return await message.client.sendMessage(message.jid,Lang.NO_RESULT,MessageType.text);
         var reply = await message.client.sendMessage(message.jid,Lang.DOWNLOADING_SONG,MessageType.text);
-        var pqr= arama[0].title.toUpperCase();
-        var lol= pqr;
-         lol= pqr.replace(' [OFFICIAL MUSIC VIDEO]', '');
-         lol= pqr.replace(' (OFFICIAL MUSIC VIDEO)', '');
-         lol= pqr.replace(' OFFICIAL MUSIC VIDEO', '');
-         lol= pqr.replace(' [OFFICIAL VIDEO]', '');
-         lol= pqr.replace(' (OFFICIAL VIDEO)', '');
-         lol= pqr.replace(' OFFICIAL VIDEO', '');
-         lol= pqr.replace(' VIDEO', '');
-         lol= pqr.replace(' M/V', '');
-         lol= pqr.replace(' OFFICIAL MV', '');
-         lol= pqr.replace(' (LYRICS)', '');
-         lol= pqr.replace(' (LYRIC)', '');
+        var lol= arama[0].title.toUpperCase();
+         lol= lol.replace(' [OFFICIAL MUSIC VIDEO]', '');
+         lol= lol.replace(' (OFFICIAL MUSIC VIDEO)', '');
+         lol= lol.replace(' OFFICIAL MUSIC VIDEO', '');
+         lol= lol.replace(' [OFFICIAL VIDEO]', '');
+         lol= lol.replace(' (OFFICIAL VIDEO)', '');
+         lol= lol.replace(' OFFICIAL VIDEO', '');
+         lol= lol.replace(' VIDEO', '');
+         lol= lol.replace(' M/V', '');
+         lol= lol.replace(' OFFICIAL MV', '');
+         lol= lol.replace(' (LYRICS)', '');
+         lol= lol.replace(' (LYRIC)', '');
         let title = arama[0].title.replace(' ', '+');
         let stream = ytdl(arama[0].videoId, {
             quality: 'highestaudio',
