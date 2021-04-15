@@ -588,7 +588,20 @@ else if (config.WORKTYPE == 'public') {
         arama = arama.all;
         if(arama.length < 1) return await message.client.sendMessage(message.jid,Lang.NO_RESULT,MessageType.text);
         var reply = await message.client.sendMessage(message.jid,Lang.DOWNLOADING_SONG,MessageType.text);
-
+        var lol= arama[0].title;
+        var lol= arama[0].title.replace(' (Official Video)', '');
+        var lol= arama[0].title.replace(' (official video)', '');
+        var lol= arama[0].title.replace(' Official Video', '');
+        var lol= arama[0].title.replace(' official video', '');
+        var lol= arama[0].title.replace(' (Official Music Video)', '');
+        var lol= arama[0].title.replace(' (official music video)', '');
+        var lol= arama[0].title.replace(' Official Music Video', '');
+        var lol= arama[0].title.replace(' official music video', '');
+        var lol= arama[0].title.replace(' Video', '');
+        var lol= arama[0].title.replace(' M/V', '');
+        var lol= arama[0].title.replace(' Official MV', '');
+        var lol= arama[0].title.replace(' (Lyrics)', '');
+        var lol= arama[0].title.replace(' (Lyric)', '');
         let title = arama[0].title.replace(' ', '+');
         let stream = ytdl(arama[0].videoId, {
             quality: 'highestaudio',
