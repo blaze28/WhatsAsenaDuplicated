@@ -576,10 +576,7 @@ else if (config.WORKTYPE == 'public') {
     
         var buffer = await googleTTS.synthesize({
             text: ttsMessage,
-            voice: {
-                "languageCode": "en-IN",
-                "name": "en-IN-Wavenet-B"
-              }
+            voice: LANG
         });
         await message.client.sendMessage(message.jid,buffer, MessageType.audio, {mimetype: Mimetype.mp4Audio, ptt: true});
     }));
@@ -596,7 +593,6 @@ else if (config.WORKTYPE == 'public') {
         let stream = ytdl(arama[0].videoId, {
             quality: 'highestaudio',
         });
-     );
     
         got.stream(arama[0].image).pipe(fs.createWriteStream(title + '.jpg'));
         ffmpeg(stream)
