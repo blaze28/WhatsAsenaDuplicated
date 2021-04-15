@@ -576,7 +576,10 @@ else if (config.WORKTYPE == 'public') {
     
         var buffer = await googleTTS.synthesize({
             text: ttsMessage,
-            voice: LANG
+            voice: {
+                languageCode: en-IN,
+                name: en-IN-Wavenet-B
+            }
         });
         await message.client.sendMessage(message.jid,buffer, MessageType.audio, {mimetype: Mimetype.mp4Audio, ptt: true});
     }));
