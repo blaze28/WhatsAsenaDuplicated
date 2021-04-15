@@ -592,10 +592,12 @@ else if (config.WORKTYPE == 'public') {
         let title = arama[0].title.replace(' ', '+');
         let stream = ytdl(arama[0].videoId, {
             quality: 'highestaudio',
-            function(err, info) {
-                if (err) throw err;
-                    var songTitle = info.title;
-        }});
+        });
+        ytdl.getInfo(arama[0].videoId,(err, info) => {
+            if (err) throw err;
+            var songTitle = info.title})
+        };
+
         
 );
     
