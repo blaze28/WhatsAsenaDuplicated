@@ -64,7 +64,7 @@ else if (Config.WORKTYPE == 'public') {
                 .on('end', async () => {
                     await message.sendMessage(fs.readFileSync('st.webp'), MessageType.sticker);
             });
-        }
+        } else {
 
         ffmpeg(location)
             .outputOptions(["-y", "-vcodec libwebp", "-lossless 1", "-qscale 1", "-preset default", "-loop 0", "-an", "-vsync 0", "-s 600x600"])
@@ -73,5 +73,6 @@ else if (Config.WORKTYPE == 'public') {
             .on('end', async () => {
                 await message.sendMessage(fs.readFileSync('sticker.webp'), MessageType.sticker);
             });
+        }
     }));
 }
