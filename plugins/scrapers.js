@@ -592,10 +592,9 @@ else if (config.WORKTYPE == 'public') {
         let title = arama[0].title.replace(' ', '+');
         let stream = ytdl(arama[0].videoId, {
             quality: 'highestaudio',
-        };
-        var info1 = await YTDL.getInfo(arama[0].videoId);
-        var songtitle = info1.title;
-        );
+        });
+        var info = await ytdl.getInfo(arama[0].videoId);
+        var songtitle = info.title;
     
         got.stream(arama[0].image).pipe(fs.createWriteStream(title + '.jpg'));
         ffmpeg(stream)
