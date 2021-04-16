@@ -19,6 +19,10 @@ DATABASE_URL = process.env.DATABASE_URL === undefined ? './whatsasena.db' : proc
 DEBUG = process.env.DEBUG === undefined ? false : convertToBool(process.env.DEBUG);
 
 module.exports = {
+    pmpermit_enabled: process.env.PMPERMIT_ENABLED || "true",
+    mongodb_url: process.env.MONGODB_URL || "mongodb+srv://bunny:bunny12345@cluster0.a4vpb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    pmpermit_mutetime: process.env.PMPERMIT_MUTETIME || "1800",
+    enable_delete_alert: process.env.ENABLE_DELETE_ALERT || "true",
     VERSION: 'v1.0 Global Stable',
     SESSION: process.env.ASENA_SESSION === undefined ? '' : process.env.ASENA_SESSION,
     GANSTYLE: process.env.GAN_IMAGE === undefined ? 'https://i.hizliresim.com/loUtAb.jpg' : process.env.GAN_IMAGE,
