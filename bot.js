@@ -19,10 +19,106 @@ const { GreetingsDB, getMessage } = require("./plugins/sql/greetings");
 const got = require('got');
 const simpleGit = require('simple-git');
 const git = simpleGit();
+const express = require('express');
+const app = express();
+const { Client, MessageMedia } = require('whatsapp-web.js');
+const config = require('./config')
+const pmpermit = require('./pmpermit');
+const { exec } = require('child_process');
 
 const heroku = new Heroku({
     token: config.HEROKU.API_KEY
 });
+
+const client = new Client({ puppeteer: { headless: true, args: ['--no-sandbox'] }, session: config.session });
+
+client.initialize();
+
+client.on('auth_failure', msg => {
+    console.error("There is a problem to authenticate, Kindly set the env var again and restart the app");
+});
+
+client.on('ready', () => {
+    console.log('Bot has been started');
+});
+
+client.on('message', async msg => {
+    if (msg.author == undefined && config.pmpermit_enabled == "true") { // Pm check for pmpermit module
+        var pmpermitcheck = await pmpermit.handler(msg.from.split("@")[0])
+        const chat = await msg.getChat();
+        if (pmpermitcheck == "permitted") {
+            // do nothing
+        } else if (pmpermitcheck.mute == true && chat.isMuted == false) { // mute 
+            msg.reply(pmpermitcheck.msg)
+            const chat = await msg.getChat();
+
+            var unmuteDate = new Date();
+            unmuteDate.setSeconds(Number(unmuteDate.getSeconds()) + Number(config.pmpermit_mutetime));
+            await chat.mute(unmuteDate)
+
+        } else if (chat.isMuted == true) {
+            //do nothing
+        } else if (pmpermitcheck == "error") {
+            //do nothing
+        } else {
+            msg.reply(pmpermitcheck.msg)
+        }
+
+    } 
+});
+
+client.on('message_create', async(msg) => {
+    if (msg.fromMe) {
+        if (msg.body == "!allow" && config.pmpermit_enabled == "true" && !msg.to.includes("-")) { // allow and unmute the chat (PMPermit module)
+
+            pmpermit.permitacton(msg.to.split("@")[0])
+            var chat = await msg.getChat();
+            await chat.unmute(true)
+            msg.reply("Allowed for PM")
+
+        } else if (msg.body == "!nopm" && config.pmpermit_enabled == "true" && !msg.to.includes("-")) { // not allowed for pm (PMPermit module)
+
+            pmpermit.nopermitacton(msg.to.split("@")[0])
+            msg.reply("Not Allowed for PM")
+
+        } else if (msg.body == "!block" && !msg.to.includes("-")) { // Block an user in pm
+
+            var chat = await msg.getChat()
+            var contact = await chat.getContact()
+            msg.reply("You have been Blocked")
+            contact.block()
+
+        } else if (msg.body == "!mute" && !msg.to.includes("-")) { // Mute an user in pm
+
+            var chat = await msg.getChat()
+            var unmuteDate = new Date()
+            unmuteDate.setSeconds(Number(unmuteDate.getSeconds()) + Number(config.pmpermit_mutetime));
+            await chat.mute(unmuteDate)
+            msg.reply(`You have been muted for ${config.pmpermit_mutetime / 60} Minutes`)
+
+        } else if (msg.body == "!unmute" && !msg.to.includes("-")) { // Unmute an user in pm
+
+            var chat = await msg.getChat();
+            await chat.unmute(true)
+            msg.reply(`You have been unmuted`)
+    }
+});
+
+client.on('message_revoke_everyone', async(after, before) => {
+    if (before) {
+        if (before.fromMe !== true && before.hasMedia !== true && before.author == undefined && config.enable_delete_alert == "true") {
+            client.sendMessage(before.from, "_You deleted this message_ 👇👇\n\n" + before.body)
+        }
+    }
+});
+
+
+app.use('/public', express.static('public'), serveIndex('public', { 'icons': true })) // public directory will be publicly available
+
+
+app.listen(process.env.PORT || 8080, () => {
+    console.log(`Server listening at Port: ${process.env.PORT || 8080}`)
+})
 
 let baseURI = '/apps/' + config.HEROKU.APP_NAME;
 
