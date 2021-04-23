@@ -89,7 +89,7 @@ else if (Config.WORKTYPE == 'public') {
         );
     
         await message.client.sendMessage(message.jid,fs.readFileSync('rbg.png'), MessageType.document, {filename: 'NoBG.png', mimetype: Mimetype.png});
-        await load.delete();
+       
     }));
 }
 
