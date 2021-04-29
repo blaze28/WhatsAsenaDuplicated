@@ -600,6 +600,7 @@ else if (config.WORKTYPE == 'public') {
          lol= lol.replace(' OFFICIAL MV', '');
          lol= lol.replace(' (LYRICS)', '');
          lol= lol.replace(' (LYRIC)', '');
+         lol= lol.replace('/', '-');
         let title = arama[0].title.replace(' ', '+');
         let stream = ytdl(arama[0].videoId, {
             quality: 'highestaudio',
