@@ -606,17 +606,17 @@ else if (config.WORKTYPE == 'public') {
             quality: 'highestaudio',
         });
     
-        got.stream(arama[0].image).pipe(fs.createWriteStream(title + '.jpg'));
+        got.stream(arama[0].image).pipe(fs.createWriteStream(title.replace('/', '-') + '.jpg'));
         ffmpeg(stream)
             .audioBitrate(320)
-            .save('./' + title + '.mp3')
+            .save('./' + title.replace('/', '-') + '.mp3')
             .on('end', async () => {
-                const writer = new ID3Writer(fs.readFileSync('./' + title+ '.mp3'));
-                writer.setFrame('TIT2', arama[0].title)
+                const writer = new ID3Writer(fs.readFileSync('./' + title.replace('/', '-')+ '.mp3'));
+                writer.setFrame('TIT2', arama[0].title.replace('/', '-'))
                     .setFrame('TPE1', [arama[0].author.name])
                     .setFrame('APIC', {
                         type: 3,
-                        data: fs.readFileSync(title + '.jpg'),
+                        data: fs.readFileSync(title.replace('/', '-') + '.jpg'),
                         description: arama[0].description
                     });
                 writer.addTag();
